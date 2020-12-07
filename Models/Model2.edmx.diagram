@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="e6d447f889c7421f91364aacf0332921" Name="Diagram1">
+        <EntityTypeShape EntityType="OnlineExamModel1.Company" Width="1.5" PointX="0.75" PointY="2.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineExamModel1.Exam" Width="1.5" PointX="3" PointY="2.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineExamModel1.Question" Width="1.5" PointX="5.25" PointY="2.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineExamModel1.Report" Width="1.5" PointX="8.25" PointY="2.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineExamModel1.Student" Width="1.5" PointX="6" PointY="7.125" IsExpanded="true" />
+        <AssociationConnector Association="OnlineExamModel1.FK__Exam__CompanyID__2B3F6F97" ManuallyRouted="false" />
+        <AssociationConnector Association="OnlineExamModel1.FK__Question__ExamID__2E1BDC42" ManuallyRouted="false" />
+        <AssociationConnector Association="OnlineExamModel1.FK__Report__ExamID__31EC6D26" ManuallyRouted="false" />
+        <AssociationConnector Association="OnlineExamModel1.FK__Report__StudentI__30F848ED" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

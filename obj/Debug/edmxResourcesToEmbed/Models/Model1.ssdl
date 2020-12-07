@@ -1,0 +1,130 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="OnlineExamModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Company">
+    <Key>
+      <PropertyRef Name="CompanyID" />
+    </Key>
+    <Property Name="CompanyID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CompanyName" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="City" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="State" Type="varchar" MaxLength="20" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Exam">
+    <Key>
+      <PropertyRef Name="ExamID" />
+    </Key>
+    <Property Name="ExamID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ExamName" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="Subject" Type="varchar" MaxLength="15" Nullable="false" />
+    <Property Name="CompanyID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Question">
+    <Key>
+      <PropertyRef Name="FileID" />
+    </Key>
+    <Property Name="FileID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FileName" Type="varchar(max)" Nullable="false" />
+    <Property Name="ExamID" Type="int" Nullable="false" />
+    <Property Name="Level" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Report">
+    <Key>
+      <PropertyRef Name="StudentID" />
+      <PropertyRef Name="ExamID" />
+    </Key>
+    <Property Name="StudentID" Type="int" Nullable="false" />
+    <Property Name="ExamID" Type="int" Nullable="false" />
+    <Property Name="Level1_Score" Type="float" />
+    <Property Name="Level2_Score" Type="float" />
+    <Property Name="Level3_Score" Type="float" />
+    <Property Name="Date" Type="date" />
+    <Property Name="Pass" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Student">
+    <Key>
+      <PropertyRef Name="StudentID" />
+    </Key>
+    <Property Name="StudentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="StudentName" Type="varchar" MaxLength="40" Nullable="false" />
+    <Property Name="DOB" Type="datetime" Nullable="false" />
+    <Property Name="Mobile_Num" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="Email" Type="varchar" MaxLength="40" Nullable="false" />
+    <Property Name="Pwd" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="City" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="State" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="Qualification" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="College" Type="varchar" MaxLength="40" Nullable="false" />
+    <Property Name="Year_of_Completion" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="FK__Exam__CompanyID__2A4B4B5E">
+    <End Role="Company" Type="Self.Company" Multiplicity="1" />
+    <End Role="Exam" Type="Self.Exam" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Company">
+        <PropertyRef Name="CompanyID" />
+      </Principal>
+      <Dependent Role="Exam">
+        <PropertyRef Name="CompanyID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Question__ExamID__2D27B809">
+    <End Role="Exam" Type="Self.Exam" Multiplicity="1" />
+    <End Role="Question" Type="Self.Question" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Exam">
+        <PropertyRef Name="ExamID" />
+      </Principal>
+      <Dependent Role="Question">
+        <PropertyRef Name="ExamID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Report__ExamID__30F848ED">
+    <End Role="Exam" Type="Self.Exam" Multiplicity="1" />
+    <End Role="Report" Type="Self.Report" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Exam">
+        <PropertyRef Name="ExamID" />
+      </Principal>
+      <Dependent Role="Report">
+        <PropertyRef Name="ExamID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Report__StudentI__300424B4">
+    <End Role="Student" Type="Self.Student" Multiplicity="1" />
+    <End Role="Report" Type="Self.Report" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Student">
+        <PropertyRef Name="StudentID" />
+      </Principal>
+      <Dependent Role="Report">
+        <PropertyRef Name="StudentID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="OnlineExamModelStoreContainer">
+    <EntitySet Name="Company" EntityType="Self.Company" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Exam" EntityType="Self.Exam" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Question" EntityType="Self.Question" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Report" EntityType="Self.Report" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Student" EntityType="Self.Student" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__Exam__CompanyID__2A4B4B5E" Association="Self.FK__Exam__CompanyID__2A4B4B5E">
+      <End Role="Company" EntitySet="Company" />
+      <End Role="Exam" EntitySet="Exam" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Question__ExamID__2D27B809" Association="Self.FK__Question__ExamID__2D27B809">
+      <End Role="Exam" EntitySet="Exam" />
+      <End Role="Question" EntitySet="Question" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Report__ExamID__30F848ED" Association="Self.FK__Report__ExamID__30F848ED">
+      <End Role="Exam" EntitySet="Exam" />
+      <End Role="Report" EntitySet="Report" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Report__StudentI__300424B4" Association="Self.FK__Report__StudentI__300424B4">
+      <End Role="Student" EntitySet="Student" />
+      <End Role="Report" EntitySet="Report" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

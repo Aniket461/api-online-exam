@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="OnlineExamModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Company">
+    <Key>
+      <PropertyRef Name="CompanyID" />
+    </Key>
+    <Property Name="CompanyID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CompanyName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="City" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="State" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Exams" Relationship="Self.FK__Exam__CompanyID__2A4B4B5E" FromRole="Company" ToRole="Exam" />
+  </EntityType>
+  <EntityType Name="Exam">
+    <Key>
+      <PropertyRef Name="ExamID" />
+    </Key>
+    <Property Name="ExamID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ExamName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Subject" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="CompanyID" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Company" Relationship="Self.FK__Exam__CompanyID__2A4B4B5E" FromRole="Exam" ToRole="Company" />
+    <NavigationProperty Name="Questions" Relationship="Self.FK__Question__ExamID__2D27B809" FromRole="Exam" ToRole="Question" />
+    <NavigationProperty Name="Reports" Relationship="Self.FK__Report__ExamID__30F848ED" FromRole="Exam" ToRole="Report" />
+  </EntityType>
+  <EntityType Name="Question">
+    <Key>
+      <PropertyRef Name="FileID" />
+    </Key>
+    <Property Name="FileID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FileName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ExamID" Type="Int32" Nullable="false" />
+    <Property Name="Level" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Exam" Relationship="Self.FK__Question__ExamID__2D27B809" FromRole="Question" ToRole="Exam" />
+  </EntityType>
+  <EntityType Name="Report">
+    <Key>
+      <PropertyRef Name="StudentID" />
+      <PropertyRef Name="ExamID" />
+    </Key>
+    <Property Name="StudentID" Type="Int32" Nullable="false" />
+    <Property Name="ExamID" Type="Int32" Nullable="false" />
+    <Property Name="Level1_Score" Type="Double" />
+    <Property Name="Level2_Score" Type="Double" />
+    <Property Name="Level3_Score" Type="Double" />
+    <Property Name="Date" Type="DateTime" Precision="0" />
+    <Property Name="Pass" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Exam" Relationship="Self.FK__Report__ExamID__30F848ED" FromRole="Report" ToRole="Exam" />
+    <NavigationProperty Name="Student" Relationship="Self.FK__Report__StudentI__300424B4" FromRole="Report" ToRole="Student" />
+  </EntityType>
+  <EntityType Name="Student">
+    <Key>
+      <PropertyRef Name="StudentID" />
+    </Key>
+    <Property Name="StudentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="StudentName" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="DOB" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Mobile_Num" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Email" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Pwd" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="City" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="State" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Qualification" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="College" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Year_of_Completion" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Reports" Relationship="Self.FK__Report__StudentI__300424B4" FromRole="Student" ToRole="Report" />
+  </EntityType>
+  <Association Name="FK__Exam__CompanyID__2A4B4B5E">
+    <End Role="Company" Type="Self.Company" Multiplicity="1" />
+    <End Role="Exam" Type="Self.Exam" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Company">
+        <PropertyRef Name="CompanyID" />
+      </Principal>
+      <Dependent Role="Exam">
+        <PropertyRef Name="CompanyID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Question__ExamID__2D27B809">
+    <End Role="Exam" Type="Self.Exam" Multiplicity="1" />
+    <End Role="Question" Type="Self.Question" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Exam">
+        <PropertyRef Name="ExamID" />
+      </Principal>
+      <Dependent Role="Question">
+        <PropertyRef Name="ExamID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Report__ExamID__30F848ED">
+    <End Role="Exam" Type="Self.Exam" Multiplicity="1" />
+    <End Role="Report" Type="Self.Report" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Exam">
+        <PropertyRef Name="ExamID" />
+      </Principal>
+      <Dependent Role="Report">
+        <PropertyRef Name="ExamID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Report__StudentI__300424B4">
+    <End Role="Student" Type="Self.Student" Multiplicity="1" />
+    <End Role="Report" Type="Self.Report" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Student">
+        <PropertyRef Name="StudentID" />
+      </Principal>
+      <Dependent Role="Report">
+        <PropertyRef Name="StudentID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="OnlineExamEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Companies" EntityType="Self.Company" />
+    <EntitySet Name="Exams" EntityType="Self.Exam" />
+    <EntitySet Name="Questions" EntityType="Self.Question" />
+    <EntitySet Name="Reports" EntityType="Self.Report" />
+    <EntitySet Name="Students" EntityType="Self.Student" />
+    <AssociationSet Name="FK__Exam__CompanyID__2A4B4B5E" Association="Self.FK__Exam__CompanyID__2A4B4B5E">
+      <End Role="Company" EntitySet="Companies" />
+      <End Role="Exam" EntitySet="Exams" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Question__ExamID__2D27B809" Association="Self.FK__Question__ExamID__2D27B809">
+      <End Role="Exam" EntitySet="Exams" />
+      <End Role="Question" EntitySet="Questions" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Report__ExamID__30F848ED" Association="Self.FK__Report__ExamID__30F848ED">
+      <End Role="Exam" EntitySet="Exams" />
+      <End Role="Report" EntitySet="Reports" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Report__StudentI__300424B4" Association="Self.FK__Report__StudentI__300424B4">
+      <End Role="Student" EntitySet="Students" />
+      <End Role="Report" EntitySet="Reports" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

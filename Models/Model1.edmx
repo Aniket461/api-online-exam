@@ -1,0 +1,363 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="OnlineExamModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Company">
+          <Key>
+            <PropertyRef Name="CompanyID" />
+          </Key>
+          <Property Name="CompanyID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CompanyName" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="City" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="State" Type="varchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Exam">
+          <Key>
+            <PropertyRef Name="ExamID" />
+          </Key>
+          <Property Name="ExamID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ExamName" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Subject" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="CompanyID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Question">
+          <Key>
+            <PropertyRef Name="FileID" />
+          </Key>
+          <Property Name="FileID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FileName" Type="varchar(max)" Nullable="false" />
+          <Property Name="ExamID" Type="int" Nullable="false" />
+          <Property Name="Level" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Report">
+          <Key>
+            <PropertyRef Name="StudentID" />
+            <PropertyRef Name="ExamID" />
+          </Key>
+          <Property Name="StudentID" Type="int" Nullable="false" />
+          <Property Name="ExamID" Type="int" Nullable="false" />
+          <Property Name="Level1_Score" Type="float" />
+          <Property Name="Level2_Score" Type="float" />
+          <Property Name="Level3_Score" Type="float" />
+          <Property Name="Date" Type="date" />
+          <Property Name="Pass" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Student">
+          <Key>
+            <PropertyRef Name="StudentID" />
+          </Key>
+          <Property Name="StudentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StudentName" Type="varchar" MaxLength="40" Nullable="false" />
+          <Property Name="DOB" Type="datetime" Nullable="false" />
+          <Property Name="Mobile_Num" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="40" Nullable="false" />
+          <Property Name="Pwd" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="City" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="State" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Qualification" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="College" Type="varchar" MaxLength="40" Nullable="false" />
+          <Property Name="Year_of_Completion" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__Exam__CompanyID__2A4B4B5E">
+          <End Role="Company" Type="Self.Company" Multiplicity="1" />
+          <End Role="Exam" Type="Self.Exam" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="CompanyID" />
+            </Principal>
+            <Dependent Role="Exam">
+              <PropertyRef Name="CompanyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Question__ExamID__2D27B809">
+          <End Role="Exam" Type="Self.Exam" Multiplicity="1" />
+          <End Role="Question" Type="Self.Question" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Exam">
+              <PropertyRef Name="ExamID" />
+            </Principal>
+            <Dependent Role="Question">
+              <PropertyRef Name="ExamID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Report__ExamID__30F848ED">
+          <End Role="Exam" Type="Self.Exam" Multiplicity="1" />
+          <End Role="Report" Type="Self.Report" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Exam">
+              <PropertyRef Name="ExamID" />
+            </Principal>
+            <Dependent Role="Report">
+              <PropertyRef Name="ExamID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Report__StudentI__300424B4">
+          <End Role="Student" Type="Self.Student" Multiplicity="1" />
+          <End Role="Report" Type="Self.Report" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="StudentID" />
+            </Principal>
+            <Dependent Role="Report">
+              <PropertyRef Name="StudentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="OnlineExamModelStoreContainer">
+          <EntitySet Name="Company" EntityType="Self.Company" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Exam" EntityType="Self.Exam" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Question" EntityType="Self.Question" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Report" EntityType="Self.Report" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Student" EntityType="Self.Student" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Exam__CompanyID__2A4B4B5E" Association="Self.FK__Exam__CompanyID__2A4B4B5E">
+            <End Role="Company" EntitySet="Company" />
+            <End Role="Exam" EntitySet="Exam" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Question__ExamID__2D27B809" Association="Self.FK__Question__ExamID__2D27B809">
+            <End Role="Exam" EntitySet="Exam" />
+            <End Role="Question" EntitySet="Question" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Report__ExamID__30F848ED" Association="Self.FK__Report__ExamID__30F848ED">
+            <End Role="Exam" EntitySet="Exam" />
+            <End Role="Report" EntitySet="Report" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Report__StudentI__300424B4" Association="Self.FK__Report__StudentI__300424B4">
+            <End Role="Student" EntitySet="Student" />
+            <End Role="Report" EntitySet="Report" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="OnlineExamModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Company">
+          <Key>
+            <PropertyRef Name="CompanyID" />
+          </Key>
+          <Property Name="CompanyID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="City" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="State" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Exams" Relationship="Self.FK__Exam__CompanyID__2A4B4B5E" FromRole="Company" ToRole="Exam" />
+        </EntityType>
+        <EntityType Name="Exam">
+          <Key>
+            <PropertyRef Name="ExamID" />
+          </Key>
+          <Property Name="ExamID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ExamName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Subject" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CompanyID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Company" Relationship="Self.FK__Exam__CompanyID__2A4B4B5E" FromRole="Exam" ToRole="Company" />
+          <NavigationProperty Name="Questions" Relationship="Self.FK__Question__ExamID__2D27B809" FromRole="Exam" ToRole="Question" />
+          <NavigationProperty Name="Reports" Relationship="Self.FK__Report__ExamID__30F848ED" FromRole="Exam" ToRole="Report" />
+        </EntityType>
+        <EntityType Name="Question">
+          <Key>
+            <PropertyRef Name="FileID" />
+          </Key>
+          <Property Name="FileID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FileName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ExamID" Type="Int32" Nullable="false" />
+          <Property Name="Level" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Exam" Relationship="Self.FK__Question__ExamID__2D27B809" FromRole="Question" ToRole="Exam" />
+        </EntityType>
+        <EntityType Name="Report">
+          <Key>
+            <PropertyRef Name="StudentID" />
+            <PropertyRef Name="ExamID" />
+          </Key>
+          <Property Name="StudentID" Type="Int32" Nullable="false" />
+          <Property Name="ExamID" Type="Int32" Nullable="false" />
+          <Property Name="Level1_Score" Type="Double" />
+          <Property Name="Level2_Score" Type="Double" />
+          <Property Name="Level3_Score" Type="Double" />
+          <Property Name="Date" Type="DateTime" Precision="0" />
+          <Property Name="Pass" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Exam" Relationship="Self.FK__Report__ExamID__30F848ED" FromRole="Report" ToRole="Exam" />
+          <NavigationProperty Name="Student" Relationship="Self.FK__Report__StudentI__300424B4" FromRole="Report" ToRole="Student" />
+        </EntityType>
+        <EntityType Name="Student">
+          <Key>
+            <PropertyRef Name="StudentID" />
+          </Key>
+          <Property Name="StudentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StudentName" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DOB" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Mobile_Num" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Pwd" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="City" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="State" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Qualification" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="College" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Year_of_Completion" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Reports" Relationship="Self.FK__Report__StudentI__300424B4" FromRole="Student" ToRole="Report" />
+        </EntityType>
+        <Association Name="FK__Exam__CompanyID__2A4B4B5E">
+          <End Role="Company" Type="Self.Company" Multiplicity="1" />
+          <End Role="Exam" Type="Self.Exam" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="CompanyID" />
+            </Principal>
+            <Dependent Role="Exam">
+              <PropertyRef Name="CompanyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Question__ExamID__2D27B809">
+          <End Role="Exam" Type="Self.Exam" Multiplicity="1" />
+          <End Role="Question" Type="Self.Question" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Exam">
+              <PropertyRef Name="ExamID" />
+            </Principal>
+            <Dependent Role="Question">
+              <PropertyRef Name="ExamID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Report__ExamID__30F848ED">
+          <End Role="Exam" Type="Self.Exam" Multiplicity="1" />
+          <End Role="Report" Type="Self.Report" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Exam">
+              <PropertyRef Name="ExamID" />
+            </Principal>
+            <Dependent Role="Report">
+              <PropertyRef Name="ExamID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Report__StudentI__300424B4">
+          <End Role="Student" Type="Self.Student" Multiplicity="1" />
+          <End Role="Report" Type="Self.Report" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="StudentID" />
+            </Principal>
+            <Dependent Role="Report">
+              <PropertyRef Name="StudentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="OnlineExamEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Companies" EntityType="Self.Company" />
+          <EntitySet Name="Exams" EntityType="Self.Exam" />
+          <EntitySet Name="Questions" EntityType="Self.Question" />
+          <EntitySet Name="Reports" EntityType="Self.Report" />
+          <EntitySet Name="Students" EntityType="Self.Student" />
+          <AssociationSet Name="FK__Exam__CompanyID__2A4B4B5E" Association="Self.FK__Exam__CompanyID__2A4B4B5E">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="Exam" EntitySet="Exams" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Question__ExamID__2D27B809" Association="Self.FK__Question__ExamID__2D27B809">
+            <End Role="Exam" EntitySet="Exams" />
+            <End Role="Question" EntitySet="Questions" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Report__ExamID__30F848ED" Association="Self.FK__Report__ExamID__30F848ED">
+            <End Role="Exam" EntitySet="Exams" />
+            <End Role="Report" EntitySet="Reports" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Report__StudentI__300424B4" Association="Self.FK__Report__StudentI__300424B4">
+            <End Role="Student" EntitySet="Students" />
+            <End Role="Report" EntitySet="Reports" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="OnlineExamModelStoreContainer" CdmEntityContainer="OnlineExamEntities">
+          <EntitySetMapping Name="Companies">
+            <EntityTypeMapping TypeName="OnlineExamModel.Company">
+              <MappingFragment StoreEntitySet="Company">
+                <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
+                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="State" ColumnName="State" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Exams">
+            <EntityTypeMapping TypeName="OnlineExamModel.Exam">
+              <MappingFragment StoreEntitySet="Exam">
+                <ScalarProperty Name="ExamID" ColumnName="ExamID" />
+                <ScalarProperty Name="ExamName" ColumnName="ExamName" />
+                <ScalarProperty Name="Subject" ColumnName="Subject" />
+                <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Questions">
+            <EntityTypeMapping TypeName="OnlineExamModel.Question">
+              <MappingFragment StoreEntitySet="Question">
+                <ScalarProperty Name="FileID" ColumnName="FileID" />
+                <ScalarProperty Name="FileName" ColumnName="FileName" />
+                <ScalarProperty Name="ExamID" ColumnName="ExamID" />
+                <ScalarProperty Name="Level" ColumnName="Level" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Reports">
+            <EntityTypeMapping TypeName="OnlineExamModel.Report">
+              <MappingFragment StoreEntitySet="Report">
+                <ScalarProperty Name="StudentID" ColumnName="StudentID" />
+                <ScalarProperty Name="ExamID" ColumnName="ExamID" />
+                <ScalarProperty Name="Level1_Score" ColumnName="Level1_Score" />
+                <ScalarProperty Name="Level2_Score" ColumnName="Level2_Score" />
+                <ScalarProperty Name="Level3_Score" ColumnName="Level3_Score" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Pass" ColumnName="Pass" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Students">
+            <EntityTypeMapping TypeName="OnlineExamModel.Student">
+              <MappingFragment StoreEntitySet="Student">
+                <ScalarProperty Name="StudentID" ColumnName="StudentID" />
+                <ScalarProperty Name="StudentName" ColumnName="StudentName" />
+                <ScalarProperty Name="DOB" ColumnName="DOB" />
+                <ScalarProperty Name="Mobile_Num" ColumnName="Mobile_Num" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Pwd" ColumnName="Pwd" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="Qualification" ColumnName="Qualification" />
+                <ScalarProperty Name="College" ColumnName="College" />
+                <ScalarProperty Name="Year_of_Completion" ColumnName="Year_of_Completion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
