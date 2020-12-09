@@ -46,6 +46,11 @@ namespace OnlineExam.Controllers
             }
         }
 
+
+
+
+        #region registeration
+
         [HttpPost]
         [Route("student/post")]
         public HttpResponseMessage Post(Student s)
@@ -73,6 +78,10 @@ namespace OnlineExam.Controllers
             }
         }
 
+        #endregion
+
+
+        #region updatePassword
         [Route("student/{id}")]
         //put for password change
         public HttpResponseMessage Put(int id, [FromBody] Student c)
@@ -102,8 +111,11 @@ namespace OnlineExam.Controllers
 
         }
 
+        #endregion
 
-        
+
+        #region Login
+
         [HttpPost]
         [Route("student/login")]
         public HttpResponseMessage login(Login l)
@@ -135,6 +147,11 @@ namespace OnlineExam.Controllers
         }
 
 
+        #endregion
+
+
+
+        #region For Report
         [Route("getuniques")]
         public IEnumerable<string> Get(string state)
         {
@@ -329,6 +346,8 @@ namespace OnlineExam.Controllers
 
 
         }
+
+        #endregion
 
 
     }

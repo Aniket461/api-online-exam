@@ -16,6 +16,9 @@ namespace OnlineExam.Controllers
     {
         static bool a;
         OnlineExamEntities1 oe = new OnlineExamEntities1();
+
+
+        #region getallfiles
         // GET: api/Question
         [Route("GetAllFiles")]
         public IEnumerable<Object> Get()
@@ -23,6 +26,8 @@ namespace OnlineExam.Controllers
             var f = from q in oe.Questions where q.Del == 1 select new { q.FileName, q.FileID };
             return f;
         }
+
+        #endregion
 
 
         // GET: api/Question/5
@@ -37,6 +42,8 @@ namespace OnlineExam.Controllers
             return Ok(question);
         }
 
+
+        
         // POST: api/Question
         [Route("NewFile")]
 
@@ -57,6 +64,8 @@ namespace OnlineExam.Controllers
 
         }
 
+
+        #region RemoveFileApi
         // DELETE: api/Question/5
         [Route("RemoveFile")]
         [ResponseType(typeof(Question))]
@@ -75,6 +84,11 @@ namespace OnlineExam.Controllers
             }
         }
 
+
+        #endregion
+
+
+        #region ReadingfilesforQuestionPage
         //
         [AcceptVerbs("GET", "POST")]
         [Route("Read/{id}")]
@@ -82,74 +96,86 @@ namespace OnlineExam.Controllers
         public List<MCQquestions> ReadQuestionFile(int id)
         {
 
-            List<string[]> data = new List<string[]>();
-            string path = (from q in oe.Questions
-                           where q.FileID == id
-                           select q.FileName
-                               ).FirstOrDefault();
-            TextFieldParser parser = new TextFieldParser(path, Encoding.ASCII);
-            parser.HasFieldsEnclosedInQuotes = true;
-            parser.SetDelimiters(",");
-            string[] fields;
-            while (!parser.EndOfData)
-            {
-                fields = parser.ReadFields();
-                if (fields[0] == "")
-                    continue;
-                data.Add(fields);
-            }
-            parser.Close();
             List<MCQquestions> mcq = new List<MCQquestions>();
-            int[] arr = new int[data.Count];           //for Random Questions
-            arr[0] = 0;
-            Random rand = new Random();
-            for (int i = 1; i <= 10; i++)
-            {
-                int number;
-                do
-                {
-                    number = rand.Next(1, data.Count);
-                } while (arr.Contains(number));
-                arr[i] = number;
-            }
-            int k = 0;
-            mcq.Add(new MCQquestions
-            {
-                Que_No = data[0][0],
-                Question = data[0][1],
-                OP1 = data[0][2],
-                OP2 = data[0][3],
-                OP3 = data[0][4],
-                OP4 = data[0][5],
-                Ans = data[0][6]
-            });
 
-            for (int i = 1; i <= 10; i++)
+            try
             {
-                foreach (var rows in data)
+
+                List<string[]> data = new List<string[]>();
+                string path = (from q in oe.Questions
+                               where q.FileID == id
+                               select q.FileName
+                                   ).FirstOrDefault();
+                TextFieldParser parser = new TextFieldParser(path, Encoding.Default);
+                parser.HasFieldsEnclosedInQuotes = true;
+                parser.SetDelimiters(",");
+                string[] fields;
+                while (!parser.EndOfData)
                 {
-                    if (rows[0] == arr[i].ToString())
+                    fields = parser.ReadFields();
+                    if (fields[0] == "")
+                        continue;
+                    data.Add(fields);
+                }
+                parser.Close();
+                int[] arr = new int[data.Count];           //for Random Questions
+                arr[0] = 0;
+                Random rand = new Random();
+                for (int i = 1; i <= 10; i++)
+                {
+                    int number;
+                    do
                     {
-                        mcq.Add(new MCQquestions
+                        number = rand.Next(1, data.Count);
+                    } while (arr.Contains(number));
+                    arr[i] = number;
+                }
+                int k = 0;
+                mcq.Add(new MCQquestions
+                {
+                    Que_No = data[0][0],
+                    Question = data[0][1],
+                    OP1 = data[0][2],
+                    OP2 = data[0][3],
+                    OP3 = data[0][4],
+                    OP4 = data[0][5],
+                    Ans = data[0][6]
+                });
+
+                for (int i = 1; i <= 10; i++)
+                {
+                    foreach (var rows in data)
+                    {
+                        if (rows[0] == arr[i].ToString())
                         {
-                            Que_No = i.ToString(),
-                            Question = rows[1],
-                            OP1 = rows[2],
-                            OP2 = rows[3],
-                            OP3 = rows[4],
-                            OP4 = rows[5],
-                            Ans = rows[6]
-                        });
-                        break;
+                            mcq.Add(new MCQquestions
+                            {
+                                Que_No = i.ToString(),
+                                Question = rows[1],
+                                OP1 = rows[2],
+                                OP2 = rows[3],
+                                OP3 = rows[4],
+                                OP4 = rows[5],
+                                Ans = rows[6]
+                            });
+                            break;
+                        }
                     }
                 }
+                //IEnumerable<MCQquestions> m = mcq as IEnumerable<MCQquestions>;
+                return mcq;
             }
-            //IEnumerable<MCQquestions> m = mcq as IEnumerable<MCQquestions>;
-            return mcq;
+
+            catch(Exception e)
+            {
+                return mcq;
+            }
         }
+        #endregion
 
         //
 
+        #region posttoexistingexam
         [HttpPost]
         [Route("try")]
         public IHttpActionResult Post2(Question q)
@@ -189,6 +215,13 @@ namespace OnlineExam.Controllers
 
         }
 
+
+        #endregion
+
+
+
+        #region PosttoNewExam
+
         [HttpPost]
         [Route("try2")]
         public IHttpActionResult Post2(Post2 p)
@@ -216,7 +249,10 @@ namespace OnlineExam.Controllers
             }
         }
 
+        #endregion
         //
+
+        #region GetFileID
 
         [HttpGet]
         [Route("getfileid")]
@@ -237,6 +273,8 @@ namespace OnlineExam.Controllers
 
 
         }
+
+        #endregion
 
 
     }

@@ -16,7 +16,9 @@ namespace OnlineExam.Controllers
     {
 
         OnlineExamEntities1 oe1 = new OnlineExamEntities1();
-        
+
+
+        #region Dashboard
 
         [Route("dashboard")]
         [HttpGet]
@@ -88,7 +90,13 @@ namespace OnlineExam.Controllers
 
         }
 
+
+        #endregion
+
         //
+
+
+        #region GetlevelwiseReport
 
         [Route("GetLevelReport")]
         public Object GetReport(int sid, int eid, int lid)
@@ -124,7 +132,12 @@ namespace OnlineExam.Controllers
             }
         }
 
+        #endregion
         //
+
+
+
+        #region getFinalReport
 
         [Route("GetReport")]
         [HttpGet]
@@ -163,6 +176,12 @@ namespace OnlineExam.Controllers
 
         }
 
+        #endregion
+
+
+
+
+        #region PostReports
         [HttpPost]
         [Route("postreport")]
 
@@ -189,6 +208,7 @@ namespace OnlineExam.Controllers
             }
         }
 
+        #endregion
 
     }
 }
